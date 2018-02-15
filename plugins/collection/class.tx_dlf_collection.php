@@ -120,7 +120,7 @@ class tx_dlf_collection extends tx_dlf_plugin {
         $result = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
             'tx_dlf_collections.index_name AS index_name, tx_dlf_collections.index_search as index_query, tx_dlf_collections.uid AS uid,tx_dlf_collections.label AS label,tx_dlf_collections.thumbnail AS thumbnail,tx_dlf_collections.description AS description,tx_dlf_collections.priority AS priority',
             'tx_dlf_collections',
-            $selectedCollections . $showUserDefinedCollections .' AND tx_dlf_collections.pid='.intval($this->conf['pages']). tx_dlf_helper::whereClause('tx_dlf_collections'),
+            $selectedCollections.$showUserDefinedCollections.' AND tx_dlf_collections.pid='.intval($this->conf['pages']).tx_dlf_helper::whereClause('tx_dlf_collections'),
             '',
             $orderBy,
             ''
@@ -150,15 +150,15 @@ class tx_dlf_collection extends tx_dlf_plugin {
             $solr_query = '';
 
             if ($collection['index_query'] != "") {
-                $solr_query .= '(' . $collection['index_query'] . ')';
+                $solr_query .= '('.$collection['index_query'].')';
             } else {
-                $solr_query .= 'collection:' . '"' . $collection['index_name'] .'"';
+                $solr_query .= 'collection:'.'"'.$collection['index_name'].'"';
             }
 
-            $partOfZero = $solr->search_raw($solr_query . ' partof:0', $parameters);
-            $partOfSomething = $solr->search_raw($solr_query . ' AND NOT partof:0', $parameters);
+            $partOfZero = $solr->search_raw($solr_query.' partof:0', $parameters);
+            $partOfSomething = $solr->search_raw($solr_query.' AND NOT partof:0', $parameters);
 
-            $titles = array();
+            $titles = array ();
 
             foreach ($partOfZero as $doc) {
                 $titles[] = $doc->uid;
@@ -285,7 +285,7 @@ class tx_dlf_collection extends tx_dlf_plugin {
         $collection = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
             'tx_dlf_collections.index_name AS index_name, tx_dlf_collections.index_search as index_query, tx_dlf_collections.label AS collLabel, tx_dlf_collections.description AS collDesc, tx_dlf_collections.thumbnail AS collThumb, tx_dlf_collections.fe_cruser_id',
             'tx_dlf_collections',
-            'tx_dlf_collections.pid='.intval($this->conf['pages']).' AND tx_dlf_collections.uid='. intval($id) . ' ' . $additionalWhere . tx_dlf_helper::whereClause('tx_dlf_collections'),
+            'tx_dlf_collections.pid='.intval($this->conf['pages']).' AND tx_dlf_collections.uid='.intval($id).' '.$additionalWhere.tx_dlf_helper::whereClause('tx_dlf_collections'),
             '',
             '',
             '1'
@@ -295,9 +295,9 @@ class tx_dlf_collection extends tx_dlf_plugin {
         $solr_query = "";
         while ($collectionData = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($collection)) {
             if ($collectionData['index_query'] != "") {
-                $solr_query .= '(' . $collectionData['index_query'] . ')';
+                $solr_query .= '('.$collectionData['index_query'].')';
             } else {
-                $solr_query .= 'collection:' . '"' . $collectionData['index_name'] . '"';
+                $solr_query .= 'collection:'.'"'.$collectionData['index_name'].'"';
             }
         }
 
@@ -314,7 +314,7 @@ class tx_dlf_collection extends tx_dlf_plugin {
         $documents = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
             'tx_dlf_documents.uid AS uid, tx_dlf_documents.metadata_sorting AS metadata_sorting, tx_dlf_documents.volume_sorting AS volume_sorting, tx_dlf_documents.partof AS partof',
             'tx_dlf_documents',
-            'tx_dlf_documents.pid='.intval($this->conf['pages']).' AND tx_dlf_documents.uid IN (' . implode(',', $documentSet).')' . $additionalWhere . tx_dlf_helper::whereClause('tx_dlf_documents'),
+            'tx_dlf_documents.pid='.intval($this->conf['pages']).' AND tx_dlf_documents.uid IN ('.implode(',', $documentSet).')'.$additionalWhere.tx_dlf_helper::whereClause('tx_dlf_documents'),
             '',
             '',
             ''
