@@ -21,7 +21,7 @@
   "version": "2.2.0",
   "require": {
     "typo3/cms": "^7.6",
-    "solarium/solarium" : "^4.0"
+    "solarium/solarium" : "^5.0"
   },
   "replace": {
     "dlf": "self.version",
